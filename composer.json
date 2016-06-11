@@ -1,7 +1,7 @@
 {
-  "name": "ozankurt/modules-forum",
-  "description": "Ready to use forum module for laravel.",
-  "keywords": ["laravel", "forum", "module"],
+  "name": "ozankurt/modules-core",
+  "description": "Core for KurtModules.",
+  "keywords": ["laravel", "core", "module"],
   "license": "MIT",
   "authors": [
     {
