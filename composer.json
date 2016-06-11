@@ -1,0 +1,23 @@
+{
+  "name": "ozankurt/modules-forum",
+  "description": "Ready to use forum module for laravel.",
+  "keywords": ["laravel", "forum", "module"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ozan Kurt",
+      "email": "ozankurt2@gmail.com"
+    }
+  ],
+  "require": {
+    "laravel/laravel": "5.2.*",
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kurt\\Modules\\Core\\": "src/"
+    }
+  }
+}
