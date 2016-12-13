@@ -39,5 +39,4 @@ trait GetUserModelData
     {
         return $this->getUserModel()->getKeyName();
     }
-
 }
