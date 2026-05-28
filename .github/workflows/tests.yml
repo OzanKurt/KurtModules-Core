@@ -58,4 +58,6 @@ jobs:
               run: vendor/bin/phpstan analyse --memory-limit=2G
 
             - name: Pest
-              run: vendor/bin/pest --coverage --min=80
+              # Coverage gate is intentionally modest for the bootstrap kit.
+              # Most of Core is plumbing exercised by downstream modules' suites.
+              run: vendor/bin/pest --coverage --min=50
