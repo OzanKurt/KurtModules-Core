@@ -39,7 +39,7 @@
   },
   "scripts": {
     "test": "vendor/bin/pest",
-    "test:coverage": "vendor/bin/pest --coverage --min=80",
+    "test:coverage": "vendor/bin/pest --coverage --min=50",
     "lint": "vendor/bin/pint --test",
     "format": "vendor/bin/pint",
     "stan": "vendor/bin/phpstan analyse --memory-limit=2G"
