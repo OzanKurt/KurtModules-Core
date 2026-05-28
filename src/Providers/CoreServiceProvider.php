@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kurt\Modules\Core\Providers;
+
+use Kurt\Modules\Core\Contracts\UserResolver;
+use Kurt\Modules\Core\Support\ConfigUserResolver;
+use Spatie\LaravelPackageTools\Package;
+
+final class CoreServiceProvider extends PackageServiceProvider
+{
+    protected function module(): string
+    {
+        return 'kurtmodules';
+    }
+
+    public function configurePackage(Package $package): void
+    {
+        $package
+            ->name('laravel-modules-core')
+            ->hasConfigFile('kurtmodules');
+    }
+
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(UserResolver::class, fn ($app) => new ConfigUserResolver($app['config']));
+    }
+}
