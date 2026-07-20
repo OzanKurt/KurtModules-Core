@@ -4,3 +4,5 @@
 composer.lock.bak
 .idea
 .phpstorm.meta.php
+.superpowers
+.playwright-mcp
