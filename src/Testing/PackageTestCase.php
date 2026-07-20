@@ -48,6 +48,17 @@ abstract class PackageTestCase extends BaseTestCase
 
     protected function defineDatabaseMigrations(): void
     {
+        $this->createUsersTable();
+    }
+
+    /**
+     * Create the shared `users` table used across module tests.
+     *
+     * Extracted so downstream overrides of {@see defineDatabaseMigrations()}
+     * can call it explicitly and avoid silently dropping the shared table.
+     */
+    protected function createUsersTable(): void
+    {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
