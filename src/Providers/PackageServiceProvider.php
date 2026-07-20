@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Kurt\Modules\Core\Providers;
 
+use Illuminate\Support\Facades\Route;
+use Kurt\Modules\Core\Http\ApiRouteGroup;
+use Kurt\Modules\Core\Http\HttpMode;
+use Kurt\Modules\Core\Support\ApiRateLimiter;
 use Kurt\Modules\Core\Support\FilamentVersion;
 use Spatie\LaravelPackageTools\PackageServiceProvider as BasePackageServiceProvider;
 
@@ -41,6 +45,42 @@ abstract class PackageServiceProvider extends BasePackageServiceProvider
     final protected function configKey(string $key): string
     {
         return "{$this->module()}.{$key}";
+    }
+
+    /**
+     * Register the module's REST API surface, gated by `{module}.http.mode`.
+     *
+     * A no-op in headless mode. When the API is enabled (api or ui) this
+     * registers the module's named rate limiter and, unless routes are cached,
+     * loads the given routes file inside a `Route::group()` built from the
+     * module's `http` config (prefix, middleware, throttle, name prefix).
+     *
+     * Modules call this from packageBooted():
+     *
+     *   $this->registerModuleApi(__DIR__.'/../../routes/api.php');
+     *
+     * The routes file distinguishes read vs write endpoints itself, applying
+     * the module's auth middleware to writes (e.g. via
+     * {@see ApiRouteGroup::attributes()} with `authenticated: true`, or a
+     * per-route `->middleware(config('{slug}.http.auth_middleware'))`).
+     */
+    protected function registerModuleApi(string $routesFile): void
+    {
+        if (! HttpMode::forModule($this->module())->apiEnabled()) {
+            return;
+        }
+
+        // The limiter must be registered even when routes are cached: the
+        // throttle middleware resolves it by name at request time.
+        ApiRateLimiter::register($this->module());
+
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Route::group(ApiRouteGroup::attributes($this->module()), function () use ($routesFile): void {
+            require $routesFile;
+        });
     }
 
     /**
