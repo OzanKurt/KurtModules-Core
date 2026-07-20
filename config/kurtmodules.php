@@ -13,6 +13,4 @@ return [
     */
 
     'user_model' => env('KURTMODULES_USER_MODEL'),
-
-    'date_format' => 'Y-m-d H:i:s',
 ];

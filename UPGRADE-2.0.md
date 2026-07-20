@@ -34,4 +34,4 @@ Update `composer.json`, run `composer update`.
 
 ## New requirement
 
-PHP 8.4 is now the minimum. Laravel 12 or 13 only.
+PHP 8.3 is now the minimum. Laravel 12 only.

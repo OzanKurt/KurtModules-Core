@@ -9,8 +9,26 @@ use Spatie\LaravelPackageTools\PackageServiceProvider as BasePackageServiceProvi
 
 abstract class PackageServiceProvider extends BasePackageServiceProvider
 {
+    /** Guards against wiring Filament resources more than once per instance. */
+    private bool $filamentRegistered = false;
+
     /** Module short-name, e.g. 'blog'. */
     abstract protected function module(): string;
+
+    /**
+     * Wire Filament resources as part of the standard package boot lifecycle.
+     *
+     * Downstream providers only need to override registerFilamentV{3,4,5} — the
+     * base handles dispatch. Providers that override packageBooted() themselves
+     * should call parent::packageBooted(); calling registerFilament() again is
+     * harmless because it is idempotent per instance.
+     */
+    public function packageBooted(): void
+    {
+        parent::packageBooted();
+
+        $this->registerFilament();
+    }
 
     /**
      * Build the fully-qualified, module-namespaced config key (e.g. "blog.title").
@@ -31,6 +49,12 @@ abstract class PackageServiceProvider extends BasePackageServiceProvider
      */
     final protected function registerFilament(): void
     {
+        if ($this->filamentRegistered) {
+            return;
+        }
+
+        $this->filamentRegistered = true;
+
         $major = FilamentVersion::major();
 
         match (true) {

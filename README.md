@@ -4,8 +4,8 @@ Shared bootstrap kit for [KurtModules](https://github.com/ozankurt) Laravel pack
 
 ## Requirements
 
-- PHP 8.4+
-- Laravel 12.x or 13.x
+- PHP 8.3+
+- Laravel 12.x
 - (Optional) Filament 3, 4, or 5
 
 ## Installation
@@ -35,7 +35,6 @@ php artisan vendor:publish --tag="kurtmodules-config"
 ```php
 return [
     'user_model' => env('KURTMODULES_USER_MODEL'),
-    'date_format' => 'Y-m-d H:i:s',
 ];
 ```
 

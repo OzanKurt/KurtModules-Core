@@ -48,6 +48,13 @@ final class ConfigUserResolver implements UserResolver
     {
         $class = $this->modelClass();
 
+        if (! class_exists($class)) {
+            throw new RuntimeException(sprintf(
+                'Configured user model [%s] class not found.',
+                $class,
+            ));
+        }
+
         if (! is_subclass_of($class, Model::class)) {
             throw new RuntimeException(sprintf(
                 'Configured user model [%s] must extend %s.',
