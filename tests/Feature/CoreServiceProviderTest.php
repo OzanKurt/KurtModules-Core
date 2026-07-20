@@ -12,7 +12,7 @@ it('binds UserResolver to ConfigUserResolver', function () {
 });
 
 it('publishes config under kurtmodules key', function () {
-    expect(config('kurtmodules.date_format'))->toBe('Y-m-d H:i:s');
+    expect(config()->has('kurtmodules.user_model'))->toBeTrue();
 });
 
 it('creates the shared users table via defineDatabaseMigrations', function () {

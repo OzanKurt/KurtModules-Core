@@ -14,13 +14,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['8.4']
+                php: ['8.3', '8.4']
                 laravel: ['12.*']
                 include:
                     - laravel: 12.*
                       testbench: 10.*
-                # Laravel 13 will be added once pestphp/pest-plugin-laravel
-                # publishes a release supporting laravel/framework ^13.0.
+                # Laravel 13 is not yet supported: orchestra/testbench caps at
+                # ^10 (Laravel 12) and pestphp/pest-plugin-laravel has no ^13
+                # release, so it stays out of both composer.json and this matrix.
 
         name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 

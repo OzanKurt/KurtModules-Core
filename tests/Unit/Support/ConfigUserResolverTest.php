@@ -49,6 +49,17 @@ it('throws when neither config key is set', function () {
         ->toThrow(RuntimeException::class);
 });
 
+it('throws a class-not-found error when the configured user model does not exist', function () {
+    $config = makeConfig([
+        'kurtmodules' => ['user_model' => 'App\\Models\\DoesNotExist'],
+    ]);
+
+    $resolver = new ConfigUserResolver($config);
+
+    expect(fn () => $resolver->primaryKey())
+        ->toThrow(RuntimeException::class, 'class not found');
+});
+
 it('throws when the configured user model does not extend Model', function () {
     $config = makeConfig([
         'kurtmodules' => ['user_model' => stdClass::class],

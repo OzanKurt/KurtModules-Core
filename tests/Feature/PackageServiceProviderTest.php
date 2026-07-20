@@ -58,3 +58,28 @@ it('is a no-op for an unsupported filament major', function () {
 
     expect($provider->fired)->toBe([]);
 });
+
+it('fires the overridden filament hook through the package boot lifecycle', function () {
+    FilamentVersion::override('5.1.3');
+
+    // Register the provider the way Laravel does: this drives the full
+    // register + boot lifecycle, so packageBooted() (not the test-only
+    // dispatch wrapper) is what invokes the overridden registerFilamentV5.
+    $provider = app()->register(new StubFilamentProvider(app()));
+
+    expect($provider->fired)->toBe([5]);
+});
+
+it('does not double-register when a provider re-invokes registerFilament', function () {
+    FilamentVersion::override('4.0.0');
+
+    $provider = makeStubProvider();
+
+    // Simulate a downstream provider whose packageBooted() calls
+    // parent::packageBooted() (which wires Filament) and then also wires it
+    // itself: the per-instance guard keeps it to a single registration.
+    $provider->packageBooted();
+    $provider->dispatchFilament();
+
+    expect($provider->fired)->toBe([4]);
+});
