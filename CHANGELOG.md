@@ -4,6 +4,15 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+### Added
+- **API kit**: shared config-convention-driven REST foundation every module inherits.
+  - `Http\HttpMode` enum (`headless`/`api`/`ui`) with safe `forModule()` resolution.
+  - `Http\ApiRouteGroup` — builds `Route::group()` attributes from a module's `http` config.
+  - `Http\Controllers\ApiController` — abstract base with a consistent success/error envelope.
+  - `Http\Concerns\HandlesApiQuery` — allow-list-driven sorting, filtering and pagination.
+  - `Support\ApiRateLimiter` — registers the per-module `{slug}-api` throttle.
+  - `PackageServiceProvider::registerModuleApi()` — no-op in headless mode; wires the limiter and routes otherwise.
+
 ## [2.0.0] - 2026-05-28
 
 ### Added
