@@ -12,6 +12,14 @@ abstract class PackageServiceProvider extends BasePackageServiceProvider
     /** Module short-name, e.g. 'blog'. */
     abstract protected function module(): string;
 
+    /**
+     * Build the fully-qualified, module-namespaced config key (e.g. "blog.title").
+     *
+     * This produces the dotted key string; reading the value at that key is the
+     * job of the InteractsWithModuleConfig::moduleConfig() trait method, which
+     * uses the same "{module}.{key}" convention. The two share the naming scheme
+     * but sit at different layers: this returns the key, the trait reads it.
+     */
     final protected function configKey(string $key): string
     {
         return "{$this->module()}.{$key}";

@@ -48,3 +48,14 @@ it('throws when neither config key is set', function () {
     expect(fn () => (new ConfigUserResolver($config))->modelClass())
         ->toThrow(RuntimeException::class);
 });
+
+it('throws when the configured user model does not extend Model', function () {
+    $config = makeConfig([
+        'kurtmodules' => ['user_model' => stdClass::class],
+    ]);
+
+    $resolver = new ConfigUserResolver($config);
+
+    expect(fn () => $resolver->primaryKey())
+        ->toThrow(RuntimeException::class, 'must extend');
+});
