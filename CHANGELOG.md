@@ -4,6 +4,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-07-22
+
 ### Added
 - **API kit**: shared config-convention-driven REST foundation every module inherits.
   - `Http\HttpMode` enum (`headless`/`api`/`ui`) with safe `forModule()` resolution.
