@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Kurt\Modules\Core\Providers;
 
+use Kurt\Modules\Core\Contracts\ModuleRegistry;
 use Kurt\Modules\Core\Contracts\UserResolver;
+use Kurt\Modules\Core\Modules\Registry;
 use Kurt\Modules\Core\Support\ConfigUserResolver;
 use Spatie\LaravelPackageTools\Package;
 
@@ -25,5 +27,6 @@ final class CoreServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->app->singleton(UserResolver::class, fn ($app) => new ConfigUserResolver($app['config']));
+        $this->app->singleton(ModuleRegistry::class, fn () => new Registry());
     }
 }
