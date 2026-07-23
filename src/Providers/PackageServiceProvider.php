@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Kurt\Modules\Core\Providers;
 
 use Illuminate\Support\Facades\Route;
+use Kurt\Modules\Core\Contracts\ModuleRegistry;
 use Kurt\Modules\Core\Http\ApiRouteGroup;
 use Kurt\Modules\Core\Http\HttpMode;
+use Kurt\Modules\Core\Modules\ModuleManifest;
 use Kurt\Modules\Core\Support\ApiRateLimiter;
 use Kurt\Modules\Core\Support\FilamentVersion;
 use Spatie\LaravelPackageTools\PackageServiceProvider as BasePackageServiceProvider;
@@ -31,7 +33,32 @@ abstract class PackageServiceProvider extends BasePackageServiceProvider
     {
         parent::packageBooted();
 
+        $this->registerModuleManifest();
+
         $this->registerFilament();
+    }
+
+    /**
+     * Register this module's manifest into the registry, if it declares one.
+     * Runs in the boot phase, after CoreServiceProvider's register phase has
+     * bound the {@see ModuleRegistry} singleton.
+     */
+    private function registerModuleManifest(): void
+    {
+        $manifest = $this->moduleManifest();
+
+        if ($manifest instanceof ModuleManifest) {
+            $this->app->make(ModuleRegistry::class)->register($manifest);
+        }
+    }
+
+    /**
+     * A module overrides this to declare itself into the registry. Returning
+     * null (the default) means the package is not a managed module.
+     */
+    protected function moduleManifest(): ?ModuleManifest
+    {
+        return null;
     }
 
     /**
